@@ -10,8 +10,12 @@ import com.example.weather_info.R
 import com.example.weather_info.databinding.ActivityMainBinding
 import com.example.weather_info.databinding.FragmentWeatherBinding
 import com.example.weather_info.weatherInfo.adapter.TodayAdapter
+import com.example.weather_info.weatherInfo.adapter.WeeklyAdapter
 
 class WeatherFragment : Fragment() {
+
+    private lateinit var todayAdapter: TodayAdapter
+    private lateinit var weeklyAdapter: WeeklyAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,8 +25,9 @@ class WeatherFragment : Fragment() {
         val binding: FragmentWeatherBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_weather, container, false
         )
+        todayAdapter = TodayAdapter()
 
-
+        weeklyAdapter = WeeklyAdapter()
 
         return binding.root
     }
