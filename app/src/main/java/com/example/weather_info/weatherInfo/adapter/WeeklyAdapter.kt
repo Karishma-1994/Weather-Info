@@ -2,13 +2,16 @@ package com.example.weather_info.weatherInfo.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_info.databinding.WeeklyViewItemBinding
+
 import com.example.weather_info.model.WeeklyModel
 
-class WeeklyAdapter : RecyclerView.Adapter<WeeklyModelViewHolder>() {
+class WeeklyAdapter : RecyclerView.Adapter<WeeklyAdapter.WeeklyModelViewHolder>() {
 
-    private var weeklyList: List<WeeklyModel> = listOf()
+
+    private var weekly: List<WeeklyModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeeklyModelViewHolder {
         val binding: WeeklyViewItemBinding =
@@ -16,24 +19,25 @@ class WeeklyAdapter : RecyclerView.Adapter<WeeklyModelViewHolder>() {
         return WeeklyModelViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: WeeklyModelViewHolder, position: Int) {
-        holder.bind(weeklyList[position])
-    }
-
     override fun getItemCount(): Int {
-        return weeklyList.size
+        return weekly.size
     }
 
-    fun setToday(weeklyList: List<WeeklyModel>) {
-        this.weeklyList = weeklyList
+
+    override fun onBindViewHolder(holder: WeeklyModelViewHolder, position: Int) {
+        holder.bind(weekly[position])
+    }
+
+    fun setWeekly(weeklyModelList: List<WeeklyModel>) {
+        this.weekly = weeklyModelList
         notifyDataSetChanged()
     }
-}
 
-class WeeklyModelViewHolder(private var binding: WeeklyViewItemBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-    fun bind(weeklyModel: WeeklyModel) {
-        binding.weeklyData = weeklyModel
-        binding.executePendingBindings()
+    class WeeklyModelViewHolder(private var binding: WeeklyViewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(weeklyModel: WeeklyModel) {
+            binding.weeklyData = weeklyModel
+            binding.executePendingBindings()
+        }
     }
 }

@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_info.databinding.TodayViewItemBinding
 import com.example.weather_info.model.TodayModel
 
-class TodayAdapter : RecyclerView.Adapter<TodayModelViewHolder>() {
+class TodayAdapter : RecyclerView.Adapter<TodayAdapter.TodayModelViewHolder>() {
 
-    private var todayList: List<TodayModel> = listOf()
+    private var todays: List<TodayModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodayModelViewHolder {
         val binding: TodayViewItemBinding =
@@ -16,24 +16,24 @@ class TodayAdapter : RecyclerView.Adapter<TodayModelViewHolder>() {
         return TodayModelViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TodayModelViewHolder, position: Int) {
-        holder.bind(todayList[position])
-    }
-
     override fun getItemCount(): Int {
-        return todayList.size
+        return todays.size
     }
 
-    fun setToday(todayList: List<TodayModel>) {
-        this.todayList = todayList
+    override fun onBindViewHolder(holder: TodayModelViewHolder, position: Int) {
+        holder.bind(todays[position])
+    }
+
+    fun setTodays(todayModelList: List<TodayModel>) {
+        this.todays = todayModelList
         notifyDataSetChanged()
     }
-}
 
-class TodayModelViewHolder(private var binding: TodayViewItemBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-    fun bind(todayModel: TodayModel) {
-        binding.todayData = todayModel
-        binding.executePendingBindings()
+    class TodayModelViewHolder(private var binding: TodayViewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(todayModel: TodayModel) {
+            binding.todayData = todayModel
+            binding.executePendingBindings()
+        }
     }
 }
