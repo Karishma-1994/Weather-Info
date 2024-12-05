@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.example.weather_info.R
 import com.example.weather_info.databinding.FragmentWeatherBinding
+import com.example.weather_info.network.WeatherApiImpl
 import com.example.weather_info.weatherInfo.adapter.TodayAdapter
 import com.example.weather_info.weatherInfo.adapter.WeeklyAdapter
 
