@@ -1,6 +1,5 @@
 package com.example.weather_info.model
 
-import android.opengl.Visibility
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeather(
@@ -8,7 +7,6 @@ data class CurrentWeather(
     @SerializedName("weather") val weather: List<Weather>,
     @SerializedName("base") val base: String?,
     @SerializedName("main") val main: Main,
-    @SerializedName("visibility") val visibility: Visibility?,
     @SerializedName("wind") val wind: Wind?,
     @SerializedName("rain") val rain: Rain?,
     @SerializedName("cloud") val cloud: Cloud?,

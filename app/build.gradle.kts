@@ -18,6 +18,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures{
+        buildConfig = true
         viewBinding = true
         dataBinding = true
     }
@@ -29,6 +30,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "WEATHER_API_ENDPOINT", "\"https://api.openweathermap.org/\"")
+            buildConfigField( "String", "WEATHER_API_APP_ID", "\"d24a2df07606c067c0f768bdc2cc10a5\"")
+        }
+        debug {
+            buildConfigField("String", "WEATHER_API_ENDPOINT", "\"https://api.openweathermap.org/\"")
+            buildConfigField( "String", "WEATHER_API_APP_ID", "\"d24a2df07606c067c0f768bdc2cc10a5\"")
         }
     }
     compileOptions {
@@ -57,5 +64,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.converter)
-
+    implementation(libs.picasso)
 }

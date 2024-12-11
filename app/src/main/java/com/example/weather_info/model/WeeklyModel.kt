@@ -1,7 +1,9 @@
 package com.example.weather_info.model
 
 data class WeeklyModel(
-    val id: Int,
-    val day: String,
-    val temp: String
+    val date: String,
+    val day: String?,
+    val tempMin: String?,
+    val tempMax: String?,
+    val icon: String?
 )

@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_info.databinding.WeeklyViewItemBinding
 
 import com.example.weather_info.model.WeeklyModel
+import com.example.weather_info.util.loadWeatherIcon
 
 class WeeklyAdapter : RecyclerView.Adapter<WeeklyAdapter.WeeklyModelViewHolder>() {
-
 
     private var weekly: List<WeeklyModel> = mutableListOf()
 
@@ -22,7 +22,6 @@ class WeeklyAdapter : RecyclerView.Adapter<WeeklyAdapter.WeeklyModelViewHolder>(
     override fun getItemCount(): Int {
         return weekly.size
     }
-
 
     override fun onBindViewHolder(holder: WeeklyModelViewHolder, position: Int) {
         holder.bind(weekly[position])
@@ -38,6 +37,7 @@ class WeeklyAdapter : RecyclerView.Adapter<WeeklyAdapter.WeeklyModelViewHolder>(
         fun bind(weeklyModel: WeeklyModel) {
             binding.weeklyData = weeklyModel
             binding.executePendingBindings()
+            binding.weatherIconImageView.loadWeatherIcon(weeklyModel.icon!!)
         }
     }
 }

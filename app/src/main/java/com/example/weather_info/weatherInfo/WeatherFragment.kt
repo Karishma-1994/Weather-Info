@@ -8,10 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.example.weather_info.R
 import com.example.weather_info.databinding.FragmentWeatherBinding
-import com.example.weather_info.network.WeatherApiImpl
+import com.example.weather_info.util.loadWeatherIcon
 import com.example.weather_info.weatherInfo.adapter.TodayAdapter
 import com.example.weather_info.weatherInfo.adapter.WeeklyAdapter
 
@@ -45,8 +44,18 @@ class WeatherFragment : Fragment() {
 
         binding.rvWeekly.adapter = weeklyAdapter
 
-        todayAdapter.setTodays(viewModel.todayModelList.value!!)
-        weeklyAdapter.setWeekly(viewModel.weeklyModelList.value!!)
+
+        viewModel.todayModel.observe(viewLifecycleOwner) {
+            it?.icon?.let { icon ->
+                binding.weatherIconImageView.loadWeatherIcon(icon)
+            }
+        }
+
+        viewModel.weeklyModels.observe(viewLifecycleOwner) {
+            it?.let {
+                weeklyAdapter.setWeekly(it)
+            }
+        }
 
         return binding.root
     }

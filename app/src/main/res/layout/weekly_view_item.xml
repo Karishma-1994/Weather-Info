@@ -18,28 +18,66 @@
 
         <TextView
             android:id="@+id/tvWeeklyDay"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@{WeeklyData.day}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperature"
+            app:layout_constraintEnd_toStartOf="@id/tvWeeklyDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Day" />
 
         <TextView
-            android:id="@+id/tvWeeklyTemperature"
-            android:layout_width="0dp"
+            android:id="@+id/tvWeeklyDate"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@{WeeklyData.temp}"
+            android:text="@{WeeklyData.date}"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperatureMax"
+            app:layout_constraintStart_toEndOf="@id/tvWeeklyDay"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Date" />
+
+        <ImageView
+            android:id="@+id/weatherIconImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvWeeklyDate"
+            app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperatureMax"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvWeeklyTemperatureMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@{WeeklyData.tempMax}"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperatureMin"
+            app:layout_constraintStart_toEndOf="@id/weatherIconImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TempMax" />
+
+        <TextView
+            android:id="@+id/tvWeeklyTemperatureMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@{WeeklyData.tempMin}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvWeeklyDay"
+            app:layout_constraintStart_toEndOf="@id/tvWeeklyTemperatureMax"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Temp" />
+            tools:text="TempMin" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
