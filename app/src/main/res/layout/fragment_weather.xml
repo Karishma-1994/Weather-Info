@@ -22,16 +22,16 @@
             tools:context=".weatherInfo.WeatherFragment">
 
             <ImageView
-                android:id="@+id/weatherIconImageView"
+                android:id="@+id/currentWeatherIconImageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toStartOf="@id/textView"
+                app:layout_constraintEnd_toStartOf="@id/tvcurrent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvcurrent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -39,11 +39,11 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/weatherIconImageView"
+                app:layout_constraintStart_toEndOf="@id/currentWeatherIconImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvcurrent2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -51,7 +51,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView" />
+                app:layout_constraintTop_toBottomOf="@id/tvcurrent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvToday"
@@ -65,7 +65,7 @@
                 app:spanCount="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView2"/>
+                app:layout_constraintTop_toBottomOf="@id/tvcurrent2"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWeekly"

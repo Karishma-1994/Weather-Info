@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.weather_info.model.CurrentWeather
 import com.example.weather_info.model.Forecast
 import com.example.weather_info.model.CurrentModel
+import com.example.weather_info.model.TodayModel
 import com.example.weather_info.model.WeeklyForecast
 import com.example.weather_info.model.WeeklyModel
 import com.example.weather_info.network.WeatherRepository
@@ -33,6 +34,11 @@ class WeatherViewModel : ViewModel() {
     val weeklyModels: LiveData<List<WeeklyModel>>
         get() = _weeklyModels
 
+    private val _todayModels = MutableLiveData<List<TodayModel>>()
+
+    val todayModels: LiveData<List<TodayModel>>
+        get() = _todayModels
+
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -41,14 +47,17 @@ class WeatherViewModel : ViewModel() {
     }
 
     private val dayIdFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+    private val todayDate = dayIdFormat.format(Date())
     private var dayNameFormat: SimpleDateFormat = SimpleDateFormat("EE", Locale.getDefault())
     private var dateFormat: SimpleDateFormat = SimpleDateFormat("dd/MM", Locale.getDefault())
-    private var mainDateFormat: SimpleDateFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
+    private var timeFormat: SimpleDateFormat = SimpleDateFormat("hh:mm aa", Locale.getDefault())
+    private var mainDateFormat: SimpleDateFormat =
+        SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
 
     init {
-        getToday()
-        getWeeklyList()
         setTimeZone()
+        getCurrent()
+        getForecast()
     }
 
     private fun setTimeZone() {
@@ -56,9 +65,10 @@ class WeatherViewModel : ViewModel() {
         dayNameFormat.timeZone = TimeZone.getDefault()
         dateFormat.timeZone = TimeZone.getDefault()
         mainDateFormat.timeZone = TimeZone.getDefault()
+        timeFormat.timeZone = TimeZone.getDefault()
     }
 
-    private fun getToday() {
+    private fun getCurrent() {
         coroutineScope.launch {
             val currentWeather: CurrentWeather? = repository.getCurrentWeather(12.955967, 77.656002)
             currentWeather?.let {
@@ -73,33 +83,60 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-    private fun getWeeklyList() {
+    private fun getForecast() {
         coroutineScope.launch {
-            val result: MutableList<WeeklyModel> = mutableListOf()
+            val weeklyResult: MutableList<WeeklyModel> = mutableListOf()
+            var todayResult: MutableList<TodayModel> = mutableListOf()
             val forecast: WeeklyForecast? =
                 repository.getWeatherForecast(12.955967, 77.656002)
+
             if (forecast?.list != null && forecast.list.isNotEmpty()) {
                 // Group the forecasts by day
-                getForecastsGroupedByDay(forecast.list).forEach { (_, dayForecasts) ->
+                getForecastsGroupedByDay(forecast.list).forEach { (currentDay, dayForecasts) ->
                     if (dayForecasts.isNotEmpty()) {
                         // Use the third weather condition as representative for the whole day
                         // and if not available, then use the first one.
-                        val dayWeatherForecast =
-                            if (dayForecasts.size > 2) dayForecasts[2] else dayForecasts[0]
-                        result.add(
-                            WeeklyModel(
-                                day = getDayName(dayForecasts[0].dt!! * 1000),
-                                date = getDate(dayForecasts[0].dt!! * 1000),
-                                icon = dayWeatherForecast.weather[0].icon,
-                                tempMax = getMaxTempFor(dayForecasts),
-                                tempMin = getMinTempFor(dayForecasts)
-                            )
-                        )
+                        if (currentDay == todayDate) {
+                            todayResult = getTodayModel(dayForecasts).toMutableList()
+                        } else {
+                            weeklyResult.add(getWeeklyModel(dayForecasts))
+                        }
                     }
                 }
             }
-            _weeklyModels.value = result
+            _weeklyModels.value = weeklyResult
+            _todayModels.value = todayResult
         }
+    }
+
+    private fun getWeeklyModel(
+        dayForecasts: List<Forecast>
+    ): WeeklyModel {
+        val dayWeatherForecast =
+            if (dayForecasts.size > 1) dayForecasts[1] else dayForecasts[0]
+        return WeeklyModel(
+            day = getDayName(dayForecasts[0].dt!! * 1000),
+            date = getDate(dayForecasts[0].dt!! * 1000),
+            icon = dayWeatherForecast.weather[0].icon,
+            tempMax = getMaxTempFor(dayForecasts),
+            tempMin = getMinTempFor(dayForecasts)
+        )
+    }
+
+    private fun getTodayModel(
+        dayForecasts: List<Forecast>
+    ): List<TodayModel> {
+        val todayResult: MutableList<TodayModel> = mutableListOf()
+        dayForecasts.forEach {
+            todayResult.add(
+                TodayModel(
+                    time = getTime(it.dt!! * 1000),
+                    icon = it.weather[0].icon,
+                    temp = it.main.temp.toString()
+                )
+            )
+        }
+        return todayResult
     }
 
     override fun onCleared() {
@@ -107,7 +144,7 @@ class WeatherViewModel : ViewModel() {
         viewModelJob.cancel()
     }
 
-    private fun getMaxTempFor(dayForecasts: List<Forecast>): String? {
+    private fun getMaxTempFor(dayForecasts: List<Forecast>): String {
         var maxTemp: Double? = null
         dayForecasts.forEach {
             it.main.tempMax?.let { currentMax ->
@@ -117,7 +154,7 @@ class WeatherViewModel : ViewModel() {
         return maxTemp.toString()
     }
 
-    private fun getMinTempFor(dayForecasts: List<Forecast>): String? {
+    private fun getMinTempFor(dayForecasts: List<Forecast>): String {
         var minTemp: Double? = null
         dayForecasts.forEach {
             it.main.tempMin?.let { currentMin ->
@@ -143,5 +180,9 @@ class WeatherViewModel : ViewModel() {
 
     private fun getDate(utcTimeMillis: Long): String {
         return dateFormat.format(Date(utcTimeMillis))
+    }
+
+    private fun getTime(utcTimeMillis: Long): String {
+        return timeFormat.format(Date(utcTimeMillis))
     }
 }

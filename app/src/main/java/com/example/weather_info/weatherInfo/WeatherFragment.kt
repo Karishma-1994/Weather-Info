@@ -39,21 +39,26 @@ class WeatherFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvToday.adapter = todayAdapter
 
+
         binding.rvWeekly.layoutManager = LinearLayoutManager(context)
         weeklyAdapter = WeeklyAdapter()
-
         binding.rvWeekly.adapter = weeklyAdapter
-
 
         viewModel.currentModel.observe(viewLifecycleOwner) {
             it?.icon?.let { icon ->
-                binding.weatherIconImageView.loadWeatherIcon(icon)
+                binding.currentWeatherIconImageView.loadWeatherIcon(icon)
             }
         }
 
         viewModel.weeklyModels.observe(viewLifecycleOwner) {
             it?.let {
                 weeklyAdapter.setWeekly(it)
+            }
+        }
+
+        viewModel.todayModels.observe(viewLifecycleOwner) {
+            it?.let {
+                todayAdapter.setTodays(it)
             }
         }
 

@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="TodayData"
-            type="com.example.weather_info.model.CurrentModel" />
+            name="todayData"
+            type="com.example.weather_info.model.TodayModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,22 +20,33 @@
             android:id="@+id/tvTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{TodayData.time}"
+            android:text= "@{todayData.time}"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/weatherIconImageView2"
             tools:text="Time" />
+
+        <ImageView
+            android:id="@+id/weatherIconImageView2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvTemperature"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvTemperature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{TodayData.temp}"
+            android:text= "@{String.format(@string/degree_celsius, todayData.temp)}"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTime"
+            app:layout_constraintTop_toBottomOf="@id/weatherIconImageView2"
             tools:text="Temp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
