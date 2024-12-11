@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather_info.model.CurrentWeather
 import com.example.weather_info.model.Forecast
-import com.example.weather_info.model.TodayModel
-import com.example.weather_info.model.WeatherForecast
+import com.example.weather_info.model.CurrentModel
+import com.example.weather_info.model.WeeklyForecast
 import com.example.weather_info.model.WeeklyModel
 import com.example.weather_info.network.WeatherRepository
 import com.example.weather_info.network.WeatherRepositoryImpl
@@ -23,10 +23,10 @@ import kotlin.math.min
 
 class WeatherViewModel : ViewModel() {
 
-    private val _todayModel = MutableLiveData<TodayModel>()
+    private val _currentModel = MutableLiveData<CurrentModel>()
 
-    val todayModel: LiveData<TodayModel>
-        get() = _todayModel
+    val currentModel: LiveData<CurrentModel>
+        get() = _currentModel
 
     private val _weeklyModels = MutableLiveData<List<WeeklyModel>>()
 
@@ -62,8 +62,8 @@ class WeatherViewModel : ViewModel() {
         coroutineScope.launch {
             val currentWeather: CurrentWeather? = repository.getCurrentWeather(12.955967, 77.656002)
             currentWeather?.let {
-                _todayModel.value =
-                    TodayModel(
+                _currentModel.value =
+                    CurrentModel(
                         locationName = it.name,
                         time = it.timezone.toString(),
                         temp = "temp ${it.main.temp}",
@@ -76,7 +76,7 @@ class WeatherViewModel : ViewModel() {
     private fun getWeeklyList() {
         coroutineScope.launch {
             val result: MutableList<WeeklyModel> = mutableListOf()
-            val forecast: WeatherForecast? =
+            val forecast: WeeklyForecast? =
                 repository.getWeatherForecast(12.955967, 77.656002)
             if (forecast?.list != null && forecast.list.isNotEmpty()) {
                 // Group the forecasts by day

@@ -2,7 +2,7 @@ package com.example.weather_info.model
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherForecast(
+data class WeeklyForecast(
     @SerializedName("cod") val cod: Int?,
     @SerializedName("message") val message: String?,
     @SerializedName("cnt") val cnt: Int?,

@@ -1,8 +1,6 @@
 package com.example.weather_info.model
 
-import android.graphics.drawable.Icon
-
-data class TodayModel(
+data class CurrentModel(
     val locationName: String?,
     val time: String?,
     val temp: String?,

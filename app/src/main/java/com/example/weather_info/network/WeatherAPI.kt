@@ -1,8 +1,7 @@
 package com.example.weather_info.network
 
 import com.example.weather_info.model.CurrentWeather
-import com.example.weather_info.model.WeatherForecast
-import kotlinx.coroutines.Deferred
+import com.example.weather_info.model.WeeklyForecast
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -25,7 +24,7 @@ interface WeatherAPI {
         @Query("lon") lon: Double,
         @Query("units") units: String,
         @Query("appid") appId: String
-    ): WeatherForecast
+    ): WeeklyForecast
 }
 
 

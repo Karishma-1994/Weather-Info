@@ -45,7 +45,7 @@ class WeatherFragment : Fragment() {
         binding.rvWeekly.adapter = weeklyAdapter
 
 
-        viewModel.todayModel.observe(viewLifecycleOwner) {
+        viewModel.currentModel.observe(viewLifecycleOwner) {
             it?.icon?.let { icon ->
                 binding.weatherIconImageView.loadWeatherIcon(icon)
             }

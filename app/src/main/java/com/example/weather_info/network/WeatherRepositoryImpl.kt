@@ -2,7 +2,7 @@ package com.example.weather_info.network
 
 import com.example.weather_info.BuildConfig
 import com.example.weather_info.model.CurrentWeather
-import com.example.weather_info.model.WeatherForecast
+import com.example.weather_info.model.WeeklyForecast
 
 class WeatherRepositoryImpl : WeatherRepository {
 
@@ -17,7 +17,7 @@ class WeatherRepositoryImpl : WeatherRepository {
             .getCurrentWeatherAsync(lat, lon, UNITS, BuildConfig.WEATHER_API_APP_ID)
     }
 
-    override suspend fun getWeatherForecast(lat: Double, lon: Double): WeatherForecast? {
+    override suspend fun getWeatherForecast(lat: Double, lon: Double): WeeklyForecast? {
         return weatherApi
             .getWeatherForecastAsync(lat, lon, UNITS, BuildConfig.WEATHER_API_APP_ID)
     }
