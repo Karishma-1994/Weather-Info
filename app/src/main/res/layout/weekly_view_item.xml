@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="WeeklyData"
+            name="weeklyData"
             type="com.example.weather_info.model.WeeklyModel" />
     </data>
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@{WeeklyData.day}"
+            android:text="@{weeklyData.day}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvWeeklyDate"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@{WeeklyData.date}"
+            android:text="@{weeklyData.date}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperatureMax"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@{WeeklyData.tempMax}"
+            android:text= "@{String.format(@string/degree_celsius, weeklyData.tempMax)}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperatureMin"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@{WeeklyData.tempMin}"
+            android:text= "@{String.format(@string/degree_celsius, weeklyData.tempMin)}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
