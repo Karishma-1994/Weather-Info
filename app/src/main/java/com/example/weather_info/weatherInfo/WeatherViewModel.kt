@@ -56,8 +56,8 @@ class WeatherViewModel : ViewModel() {
 
     init {
         setTimeZone()
-        getCurrent()
-        getForecast()
+//        getCurrent()
+//        getForecast()
     }
 
     private fun setTimeZone() {
@@ -68,27 +68,32 @@ class WeatherViewModel : ViewModel() {
         timeFormat.timeZone = TimeZone.getDefault()
     }
 
-    private fun getCurrent() {
+    fun setLatLon(lat: Double, lon: Double) {
+        getCurrent(lat, lon)
+        getForecast(lat, lon)
+    }
+
+    private fun getCurrent(lat: Double, lon: Double) {
         coroutineScope.launch {
-            val currentWeather: CurrentWeather? = repository.getCurrentWeather(12.955967, 77.656002)
+            val currentWeather: CurrentWeather? = repository.getCurrentWeather(lat, lon)
             currentWeather?.let {
                 _currentModel.value =
                     CurrentModel(
                         locationName = it.name,
                         time = it.timezone.toString(),
-                        temp = "temp ${it.main.temp}",
+                        temp = it.main.temp.toString(),
                         icon = it.weather[0].icon
                     )
             }
         }
     }
 
-    private fun getForecast() {
+    private fun getForecast(lat: Double, lon: Double) {
         coroutineScope.launch {
             val weeklyResult: MutableList<WeeklyModel> = mutableListOf()
             var todayResult: MutableList<TodayModel> = mutableListOf()
             val forecast: WeeklyForecast? =
-                repository.getWeatherForecast(12.955967, 77.656002)
+                repository.getWeatherForecast(lat, lon)
 
             if (forecast?.list != null && forecast.list.isNotEmpty()) {
                 // Group the forecasts by day

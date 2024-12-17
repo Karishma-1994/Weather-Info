@@ -21,37 +21,43 @@
             android:background="@color/lightblue"
             tools:context=".weatherInfo.WeatherFragment">
 
-            <ImageView
-                android:id="@+id/currentWeatherIconImageView"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:layout_constraintEnd_toStartOf="@id/tvcurrent"
+            <TextView
+                android:id="@+id/tvcurrentLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="@{weatherViewModel.currentModel.locationName}"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/currentWeatherIconImageView" />
+
+            <ImageView
+                android:id="@+id/currentWeatherIconImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tvcurrentTemp"
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/tvcurrent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@{weatherViewModel.currentModel.locationName}"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/currentWeatherIconImageView"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvcurrent2"
+                android:id="@+id/tvcurrentTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@{weatherViewModel.currentModel.temp}"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text= "@{String.format(@string/degree_celsius, weatherViewModel.currentModel.temp)}"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="50sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvcurrent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/currentWeatherIconImageView"
+                app:layout_constraintBottom_toTopOf="@id/rvToday"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvToday"
@@ -62,20 +68,18 @@
                 android:orientation="horizontal"
                 android:background="@color/white"
                 android:scrollbars="horizontal"
-                app:spanCount="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvcurrent2"/>
+                app:layout_constraintTop_toBottomOf="@id/tvcurrentTemp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWeekly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:nestedScrollingEnabled="false"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:scrollbars="vertical"
-                app:spanCount="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvToday" />

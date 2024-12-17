@@ -1,3 +1,5 @@
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -65,4 +67,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.converter)
     implementation(libs.picasso)
+    implementation(libs.location)
+
 }

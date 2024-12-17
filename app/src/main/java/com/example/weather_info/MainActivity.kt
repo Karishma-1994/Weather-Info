@@ -1,5 +1,7 @@
 package com.example.weather_info
 
+import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
