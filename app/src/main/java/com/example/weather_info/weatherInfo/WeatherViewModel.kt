@@ -56,8 +56,6 @@ class WeatherViewModel : ViewModel() {
 
     init {
         setTimeZone()
-//        getCurrent()
-//        getForecast()
     }
 
     private fun setTimeZone() {

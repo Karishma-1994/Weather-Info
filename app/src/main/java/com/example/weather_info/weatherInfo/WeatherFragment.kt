@@ -1,7 +1,7 @@
 package com.example.weather_info.weatherInfo
 
-import android.app.Activity
 import android.content.Context.LOCATION_SERVICE
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -26,6 +27,9 @@ import com.example.weather_info.weatherInfo.adapter.TodayAdapter
 import com.example.weather_info.weatherInfo.adapter.WeeklyAdapter
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.net.Uri
 
 
 class WeatherFragment : Fragment() {
@@ -45,8 +49,13 @@ class WeatherFragment : Fragment() {
         val binding: FragmentWeatherBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_weather, container, false
         )
+
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(activity as AppCompatActivity)
+
+
+
+
 
         binding.lifecycleOwner = this
         binding.weatherViewModel = viewModel
@@ -79,7 +88,7 @@ class WeatherFragment : Fragment() {
             }
         }
 
-        getCurrentLocation();
+        getCurrentLocation()
 
         return binding.root
     }
@@ -89,12 +98,22 @@ class WeatherFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        println("KarishmaTest requestCode: $requestCode")
+        println("KarishmaTest permissions: $permissions")
+        println("KarishmaTest grantResults: $grantResults")
         if (requestCode == PERMISSION_REQUEST_ACCESS_LOCATION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(requireContext(), "Granted", Toast.LENGTH_SHORT).show()
                 getCurrentLocation()
             } else {
                 Toast.makeText(requireContext(), "Denied", Toast.LENGTH_SHORT).show()
+                if (shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)) {
+                    showPermissionRational()
+                } else {//Never ask again
+                    //Open Settings
+                    openSettingsDialog()
+                }
+
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -127,11 +146,44 @@ class WeatherFragment : Fragment() {
         )
     }
 
+    private fun showPermissionRational() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Permission Required")
+            setMessage("Location Permission is important to get Weather Information")
+            setCancelable(false)
+            setPositiveButton("YES") { _, _ ->
+                requestPermission()
+            }
+            setNegativeButton("NO") { _, _ ->
+                activity?.finish()
+            }
+        }.show()
+    }
+
+    private fun openSettingsDialog() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Permission Required")
+            setMessage("We need Location permission")
+            setPositiveButton("GO TO SETTINGS") { _, _ ->
+                val intent = Intent()
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                intent.addCategory(Intent.CATEGORY_DEFAULT)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                intent.data = Uri.parse("package:" + activity?.packageName)
+                startActivity(intent)
+            }
+            setNegativeButton("NO") { _, _ ->
+                activity?.finish()
+            }
+        }.show()
+    }
+
     private fun requestPermission() {
         requestPermissions(
             arrayOf(
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                ACCESS_COARSE_LOCATION,
+                ACCESS_FINE_LOCATION
             ),
             PERMISSION_REQUEST_ACCESS_LOCATION
         )
@@ -140,10 +192,10 @@ class WeatherFragment : Fragment() {
     private fun checkPermission(): Boolean {
         return ActivityCompat.checkSelfPermission(
             requireContext(),
-            android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
             requireContext(),
-            android.Manifest.permission.ACCESS_FINE_LOCATION
+            ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     }
 

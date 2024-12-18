@@ -4,6 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="weather_forecasts">Weather Forecasts</string>
     <string name="let_s_start">Let\'s Start</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
     <string name="weather_image_url">https://openweathermap.org/img/w/%1$s.png</string>
     <string name="degree_celsius">%1$s\u00B0</string>
 </resources>
