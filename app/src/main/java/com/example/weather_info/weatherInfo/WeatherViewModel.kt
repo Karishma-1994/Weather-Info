@@ -1,5 +1,6 @@
 package com.example.weather_info.weatherInfo
 
+import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,12 +40,19 @@ class WeatherViewModel : ViewModel() {
     val todayModels: LiveData<List<TodayModel>>
         get() = _todayModels
 
+
+    private val _viewState = MutableLiveData<ViewState>()
+
+    val viewState: LiveData<ViewState>
+        get() = _viewState
+
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     private val repository: WeatherRepository by lazy {
         WeatherRepositoryImpl()
     }
+
 
     private val dayIdFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
     private val todayDate = dayIdFormat.format(Date())
@@ -67,6 +75,7 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun setLatLon(lat: Double, lon: Double) {
+        _viewState.value = ViewState.Loading
         getCurrent(lat, lon)
         getForecast(lat, lon)
     }
@@ -75,6 +84,7 @@ class WeatherViewModel : ViewModel() {
         coroutineScope.launch {
             val currentWeather: CurrentWeather? = repository.getCurrentWeather(lat, lon)
             currentWeather?.let {
+                _viewState.value = ViewState.Success
                 _currentModel.value =
                     CurrentModel(
                         locationName = it.name,
@@ -107,6 +117,7 @@ class WeatherViewModel : ViewModel() {
                     }
                 }
             }
+            _viewState.value = ViewState.Success
             _weeklyModels.value = weeklyResult
             _todayModels.value = todayResult
         }
@@ -188,4 +199,10 @@ class WeatherViewModel : ViewModel() {
     private fun getTime(utcTimeMillis: Long): String {
         return timeFormat.format(Date(utcTimeMillis))
     }
+}
+
+sealed class ViewState {
+    data object Loading : ViewState()
+    data object Success : ViewState()
+    data object Failure : ViewState()
 }

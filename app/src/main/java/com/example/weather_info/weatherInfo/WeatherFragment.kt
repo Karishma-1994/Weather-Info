@@ -1,7 +1,6 @@
 package com.example.weather_info.weatherInfo
 
 import android.content.Context.LOCATION_SERVICE
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -30,6 +29,8 @@ import com.google.android.gms.location.LocationServices
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.net.Uri
+import android.opengl.Visibility
+import android.widget.ProgressBar
 
 
 class WeatherFragment : Fragment() {
@@ -37,6 +38,7 @@ class WeatherFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var todayAdapter: TodayAdapter
     private lateinit var weeklyAdapter: WeeklyAdapter
+    private lateinit var progressBar: ProgressBar
     private val viewModel: WeatherViewModel by lazy {
         ViewModelProvider(this)[WeatherViewModel::class.java]
     }
@@ -85,6 +87,28 @@ class WeatherFragment : Fragment() {
         viewModel.todayModels.observe(viewLifecycleOwner) {
             it?.let {
                 todayAdapter.setTodays(it)
+            }
+        }
+
+        viewModel.viewState.observe(viewLifecycleOwner) { viewState: ViewState ->
+            when (viewState) {
+                ViewState.Loading ->{
+                    binding.clMainLayout.visibility = View.GONE
+                    binding.clProgressBar.visibility = View.VISIBLE
+
+
+                }
+
+                ViewState.Success -> {
+                    binding.clMainLayout.visibility = View.VISIBLE
+                    binding.clProgressBar.visibility = View.GONE
+
+
+                }
+
+                ViewState.Failure -> {
+
+                }
             }
         }
 
@@ -146,6 +170,7 @@ class WeatherFragment : Fragment() {
         )
     }
 
+
     private fun showPermissionRational() {
         AlertDialog.Builder(requireContext()).apply {
             setTitle("Permission Required")
@@ -159,6 +184,7 @@ class WeatherFragment : Fragment() {
             }
         }.show()
     }
+
 
     private fun openSettingsDialog() {
         AlertDialog.Builder(requireContext()).apply {
@@ -202,4 +228,5 @@ class WeatherFragment : Fragment() {
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
     }
+
 }

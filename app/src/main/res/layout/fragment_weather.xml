@@ -10,54 +10,55 @@
             type="com.example.weather_info.weatherInfo.WeatherViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:background="@color/lightblue"
+        tools:context=".weatherInfo.WeatherFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lightblue"
-            tools:context=".weatherInfo.WeatherFragment">
+            app:layout_constraintTop_toTopOf="parent"
+           >
 
             <TextView
                 android:id="@+id/tvcurrentLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
                 android:text="@{weatherViewModel.currentModel.locationName}"
                 android:textColor="@color/white"
                 android:textSize="40sp"
+                app:layout_constraintBottom_toTopOf="@id/currentWeatherIconImageView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/currentWeatherIconImageView" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/currentWeatherIconImageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                app:layout_constraintBottom_toTopOf="@id/tvcurrentTemp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tvcurrentTemp"
+                app:layout_constraintTop_toBottomOf="@id/tvcurrentLocation"
                 tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tvcurrentTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
-                android:text= "@{String.format(@string/degree_celsius, weatherViewModel.currentModel.temp)}"
+                android:text="@{String.format(@string/degree_celsius, weatherViewModel.currentModel.temp)}"
                 android:textColor="@color/white"
                 android:textSize="50sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/rvToday"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/currentWeatherIconImageView"
-                app:layout_constraintBottom_toTopOf="@id/rvToday"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/currentWeatherIconImageView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvToday"
@@ -65,27 +66,45 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal"
                 android:background="@color/white"
+                android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvcurrentTemp"/>
+                app:layout_constraintTop_toBottomOf="@id/tvcurrentTemp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWeekly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:nestedScrollingEnabled="false"
                 android:background="@color/white"
+                android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvToday" />
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progress="100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
