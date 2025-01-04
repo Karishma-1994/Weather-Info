@@ -8,4 +8,6 @@
     <string name="No">No</string>
     <string name="weather_image_url">https://openweathermap.org/img/w/%1$s.png</string>
     <string name="degree_celsius">%1$s\u00B0</string>
+    <string name="please_check_your_internet_connection_and_try_again">Please Check Your Internet Connection and Try Again</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.example.weather_info.weatherInfo
 
-import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,13 +45,15 @@ class WeatherViewModel : ViewModel() {
     val viewState: LiveData<ViewState>
         get() = _viewState
 
+    private var lat: Double = 0.0
+    private var lon: Double = 0.0
+
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     private val repository: WeatherRepository by lazy {
         WeatherRepositoryImpl()
     }
-
 
     private val dayIdFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
     private val todayDate = dayIdFormat.format(Date())
@@ -75,51 +76,69 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun setLatLon(lat: Double, lon: Double) {
-        _viewState.value = ViewState.Loading
-        getCurrent(lat, lon)
-        getForecast(lat, lon)
+        this.lat = lat
+        this.lon = lon
+        getWeather()
     }
 
-    private fun getCurrent(lat: Double, lon: Double) {
+    fun retry() {
+        getWeather()
+    }
+
+    private fun getWeather() {
+        _viewState.value = ViewState.Loading
+        getCurrent()
+        getForecast()
+    }
+
+    private fun getCurrent() {
         coroutineScope.launch {
-            val currentWeather: CurrentWeather? = repository.getCurrentWeather(lat, lon)
-            currentWeather?.let {
-                _viewState.value = ViewState.Success
-                _currentModel.value =
-                    CurrentModel(
-                        locationName = it.name,
-                        time = it.timezone.toString(),
-                        temp = it.main.temp.toString(),
-                        icon = it.weather[0].icon
-                    )
+            try {
+                val currentWeather: CurrentWeather? = repository.getCurrentWeather(lat, lon)
+                currentWeather?.let {
+
+                    _viewState.value = ViewState.Success
+                    _currentModel.value =
+                        CurrentModel(
+                            locationName = it.name,
+                            time = it.timezone.toString(),
+                            temp = it.main.temp.toString(),
+                            icon = it.weather[0].icon
+                        )
+                }
+            } catch (e: Exception) {
+                _viewState.value = ViewState.Failure
             }
         }
     }
 
-    private fun getForecast(lat: Double, lon: Double) {
+    private fun getForecast() {
         coroutineScope.launch {
-            val weeklyResult: MutableList<WeeklyModel> = mutableListOf()
-            var todayResult: MutableList<TodayModel> = mutableListOf()
-            val forecast: WeeklyForecast? =
-                repository.getWeatherForecast(lat, lon)
+            try {
+                val weeklyResult: MutableList<WeeklyModel> = mutableListOf()
+                var todayResult: MutableList<TodayModel> = mutableListOf()
+                val forecast: WeeklyForecast? = repository.getWeatherForecast(lat, lon)
 
-            if (forecast?.list != null && forecast.list.isNotEmpty()) {
-                // Group the forecasts by day
-                getForecastsGroupedByDay(forecast.list).forEach { (currentDay, dayForecasts) ->
-                    if (dayForecasts.isNotEmpty()) {
-                        // Use the third weather condition as representative for the whole day
-                        // and if not available, then use the first one.
-                        if (currentDay == todayDate) {
-                            todayResult = getTodayModel(dayForecasts).toMutableList()
-                        } else {
-                            weeklyResult.add(getWeeklyModel(dayForecasts))
+                if (forecast?.list != null && forecast.list.isNotEmpty()) {
+                    // Group the forecasts by day
+                    getForecastsGroupedByDay(forecast.list).forEach { (currentDay, dayForecasts) ->
+                        if (dayForecasts.isNotEmpty()) {
+                            // Use the third weather condition as representative for the whole day
+                            // and if not available, then use the first one.
+                            if (currentDay == todayDate) {
+                                todayResult = getTodayModel(dayForecasts).toMutableList()
+                            } else {
+                                weeklyResult.add(getWeeklyModel(dayForecasts))
+                            }
                         }
                     }
                 }
+                _viewState.value = ViewState.Success
+                _weeklyModels.value = weeklyResult
+                _todayModels.value = todayResult
+            } catch (e: Exception) {
+                _viewState.value = ViewState.Failure
             }
-            _viewState.value = ViewState.Success
-            _weeklyModels.value = weeklyResult
-            _todayModels.value = todayResult
         }
     }
 
@@ -201,8 +220,8 @@ class WeatherViewModel : ViewModel() {
     }
 }
 
-sealed class ViewState {
-    data object Loading : ViewState()
-    data object Success : ViewState()
-    data object Failure : ViewState()
+enum class ViewState {
+    Loading,
+    Success,
+    Failure
 }

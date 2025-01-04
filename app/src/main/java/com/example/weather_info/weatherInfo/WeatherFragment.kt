@@ -55,10 +55,6 @@ class WeatherFragment : Fragment() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(activity as AppCompatActivity)
 
-
-
-
-
         binding.lifecycleOwner = this
         binding.weatherViewModel = viewModel
 
@@ -92,8 +88,9 @@ class WeatherFragment : Fragment() {
 
         viewModel.viewState.observe(viewLifecycleOwner) { viewState: ViewState ->
             when (viewState) {
-                ViewState.Loading ->{
+                ViewState.Loading -> {
                     binding.clMainLayout.visibility = View.GONE
+                    binding.clError.visibility = View.GONE
                     binding.clProgressBar.visibility = View.VISIBLE
 
 
@@ -102,14 +99,23 @@ class WeatherFragment : Fragment() {
                 ViewState.Success -> {
                     binding.clMainLayout.visibility = View.VISIBLE
                     binding.clProgressBar.visibility = View.GONE
+                    binding.clError.visibility = View.GONE
 
 
                 }
 
                 ViewState.Failure -> {
+                    binding.clMainLayout.visibility = View.GONE
+                    binding.clProgressBar.visibility = View.GONE
+                    binding.clError.visibility = View.VISIBLE
+
 
                 }
             }
+        }
+
+        binding.bntRetry.setOnClickListener {
+            viewModel.retry()
         }
 
         getCurrentLocation()
@@ -117,14 +123,12 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        println("KarishmaTest requestCode: $requestCode")
-        println("KarishmaTest permissions: $permissions")
-        println("KarishmaTest grantResults: $grantResults")
         if (requestCode == PERMISSION_REQUEST_ACCESS_LOCATION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(requireContext(), "Granted", Toast.LENGTH_SHORT).show()
