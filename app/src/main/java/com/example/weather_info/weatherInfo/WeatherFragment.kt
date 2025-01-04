@@ -92,24 +92,16 @@ class WeatherFragment : Fragment() {
                     binding.clMainLayout.visibility = View.GONE
                     binding.clError.visibility = View.GONE
                     binding.clProgressBar.visibility = View.VISIBLE
-
-
                 }
-
                 ViewState.Success -> {
                     binding.clMainLayout.visibility = View.VISIBLE
                     binding.clProgressBar.visibility = View.GONE
                     binding.clError.visibility = View.GONE
-
-
                 }
-
                 ViewState.Failure -> {
                     binding.clMainLayout.visibility = View.GONE
                     binding.clProgressBar.visibility = View.GONE
                     binding.clError.visibility = View.VISIBLE
-
-
                 }
             }
         }

@@ -64,6 +64,7 @@ class WeatherViewModel : ViewModel() {
         SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
 
     init {
+        _viewState.value = ViewState.Loading
         setTimeZone()
     }
 
