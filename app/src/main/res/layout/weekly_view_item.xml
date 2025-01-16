@@ -13,7 +13,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:padding="10dp">
 
         <TextView
@@ -22,7 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@{weeklyData.day}"
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvWeeklyDate"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +34,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@{weeklyData.date}"
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperatureMax"
             app:layout_constraintStart_toEndOf="@id/tvWeeklyDay"
@@ -58,7 +57,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text= "@{String.format(@string/degree_celsius, weeklyData.tempMax)}"
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvWeeklyTemperatureMin"
             app:layout_constraintStart_toEndOf="@id/weatherIconImageView"
@@ -71,7 +70,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text= "@{String.format(@string/degree_celsius, weeklyData.tempMin)}"
-            android:textColor="@color/black"
+            android:textColor="@color/textColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvWeeklyTemperatureMax"

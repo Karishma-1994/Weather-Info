@@ -2,10 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="orange">#F17A0A</color>
-    <color name="blue">#2196F3</color>
-    <color name="lightblue">#5C85A6</color>
-    <color name="seagreen">#009688</color>
-    <color name="seablue">#10545F</color>
+    <color name="colorPrimary">#E0E0E0</color>
+    <color name="colorPrimaryDark">#9C9C9C</color>
+    <color name="colorPrimaryLight">#EAEAF0</color>
+    <color name="colorAccent">#3C5A74</color>
+    <color name="textColor">#3C5A74</color>
 
 </resources>

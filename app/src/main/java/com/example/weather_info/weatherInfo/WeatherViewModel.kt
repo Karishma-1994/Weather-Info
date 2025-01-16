@@ -66,6 +66,7 @@ class WeatherViewModel : ViewModel() {
     init {
         _viewState.value = ViewState.Loading
         setTimeZone()
+
     }
 
     private fun setTimeZone() {

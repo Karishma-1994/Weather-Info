@@ -30,6 +30,7 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.net.Uri
 import android.opengl.Visibility
+import android.util.Log
 import android.widget.ProgressBar
 
 
@@ -44,13 +45,16 @@ class WeatherFragment : Fragment() {
     }
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         val binding: FragmentWeatherBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_weather, container, false
+
         )
+
 
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(activity as AppCompatActivity)
@@ -93,11 +97,13 @@ class WeatherFragment : Fragment() {
                     binding.clError.visibility = View.GONE
                     binding.clProgressBar.visibility = View.VISIBLE
                 }
+
                 ViewState.Success -> {
                     binding.clMainLayout.visibility = View.VISIBLE
                     binding.clProgressBar.visibility = View.GONE
                     binding.clError.visibility = View.GONE
                 }
+
                 ViewState.Failure -> {
                     binding.clMainLayout.visibility = View.GONE
                     binding.clProgressBar.visibility = View.GONE

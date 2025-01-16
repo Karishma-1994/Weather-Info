@@ -13,7 +13,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/lightblue"
         tools:context=".weatherInfo.WeatherFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +28,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 android:text="@{weatherViewModel.currentModel.locationName}"
-                android:textColor="@color/white"
+                android:textColor="@color/textColor"
                 android:textSize="40sp"
                 app:layout_constraintBottom_toTopOf="@id/currentWeatherIconImageView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@{String.format(@string/degree_celsius, weatherViewModel.currentModel.temp)}"
-                android:textColor="@color/white"
+                android:textColor="@color/textColor"
                 android:textSize="50sp"
                 app:layout_constraintBottom_toTopOf="@id/rvToday"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -62,10 +61,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvToday"
                 android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
-                android:background="@color/white"
                 android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@color/white"
+                android:background="@color/colorPrimaryLight"
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +130,7 @@
                 android:layout_marginTop="300dp"
                 android:gravity="center_horizontal"
                 android:text="@string/please_check_your_internet_connection_and_try_again"
-                android:textColor="@color/white"
+                android:textColor="@color/textColor"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/bntRetry"
                 app:layout_constraintEnd_toEndOf="parent"
