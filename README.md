@@ -24,7 +24,7 @@ A sleek Android app that provides real-time weather data and 7-day forecasts bas
 
 ## 📱 Screenshots
 
-![App Screenshot](/WeatherInfo/screenshots/screenshot.png)
+<img src = "https://github.com/Karishma-1994/Weather-Info/blob/master/screenshots/screenshot.png" width = "240" height = "480">
 
 ## 📦 Getting Started
 
@@ -48,6 +48,7 @@ The app can be tested through Android Studio's emulator or a physical device.
 
 ## 👩‍💻 Author
 Karishma Gupta
+
 📧 karishmagupta2329@gmail.com
 
 ## 📄 License
