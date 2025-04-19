@@ -20,7 +20,7 @@ A sleek Android app that provides real-time weather data and 7-day forecasts bas
 | Networking    | Retrofit, Coroutines                               |
 | Location      | Fused Location Provider API                        |
 | UI Components | LiveData, ViewModel, RecyclerView, Material Design |
-| IDE & Tools   | Android Studio, Git, Postman                       |
+| IDE & Tools   | Android Studio                     |
 
 ## 📱 Screenshots
 
